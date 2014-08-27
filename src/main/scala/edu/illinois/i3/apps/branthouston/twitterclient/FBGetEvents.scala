@@ -2,6 +2,7 @@ package edu.illinois.i3.apps.branthouston.twitterclient
 
 import com.typesafe.scalalogging.slf4j.Logging
 import facebook4j.{Event, FacebookFactory}
+import scala.collection.JavaConversions._
 import net.liftweb.json._
 
 import scala.io.Source
