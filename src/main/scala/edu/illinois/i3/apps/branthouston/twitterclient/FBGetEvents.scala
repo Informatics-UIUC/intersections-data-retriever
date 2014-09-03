@@ -30,7 +30,7 @@ object FBGetEvents extends App with Logging {
     events
   }
 
-  val placesJson = parse(Source.fromFile("places.json").getLines().mkString)
+  val placesJson = parse(Source.fromFile("fb_places.json").getLines().mkString)
 
   val sbEvents = new StringBuilder()
   sbEvents.append("id\tstart\tend\tdescription\tname\tlocation\n")

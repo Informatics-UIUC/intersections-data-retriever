@@ -30,7 +30,7 @@ object FBGetFeeds extends App with Logging {
     feed
   }
 
-  val placesJson = parse(Source.fromFile("places.json").getLines().mkString)
+  val placesJson = parse(Source.fromFile("fb_places.json").getLines().mkString)
 
   val sbPosts = new StringBuffer()
   sbPosts.append("msg_id\tpage_id\tmessage\n")
