@@ -1,6 +1,6 @@
 name := "twitter-client"
 
-version := "0.2-SNAPSHOT"
+version := "0.2.1-SNAPSHOT"
 
 organization := "edu.illinois.i3.apps.branthouston.twitterclient"
 

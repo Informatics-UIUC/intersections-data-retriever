@@ -54,7 +54,7 @@ object FBGetFeeds extends App with Logging {
 
       // Get post comments
       for (comment <- post.getComments) {
-        val msg = comment.getMessage
+        val msg = comment.getMessage.replaceAll("\\n", " ")
         sbPosts
           .append(comment.getId).append("\t")
           .append(id).append("\t")
