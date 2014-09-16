@@ -30,15 +30,16 @@ object FBGetFeeds extends App with Logging {
     feed
   }
 
-  val placesJson = parse(Source.fromFile("fb_places.json").getLines().mkString)
+  val input = readLine("Load: ")
+  val pagesJson = parse(Source.fromFile(input).getLines().mkString)
 
   val sbPosts = new StringBuffer()
   sbPosts.append("msg_id\tpage_id\tmessage\n")
 
   for {
-    JObject(placeJson) <- placesJson
-    JField("id", JString(id)) <- placeJson
-    JField("name", JString(name)) <- placeJson
+    JObject(pageJson) <- pagesJson
+    JField("id", JString(id)) <- pageJson
+    JField("name", JString(name)) <- pageJson
   } {
     logger.info(s"Getting posts and comments for $name...")
     // Get feed and comments
@@ -63,5 +64,6 @@ object FBGetFeeds extends App with Logging {
     }
   }
 
-  File("fb_posts.txt").writeAll(sbPosts.toString)
+  val saveAs = readLine("Save as: ")
+  File(saveAs).writeAll(sbPosts.toString)
 }
