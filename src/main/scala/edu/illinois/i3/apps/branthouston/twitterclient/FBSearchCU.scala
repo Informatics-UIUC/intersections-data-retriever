@@ -1,12 +1,11 @@
 package edu.illinois.i3.apps.branthouston.twitterclient
 
 import com.typesafe.scalalogging.slf4j.Logging
-import facebook4j.{GeoLocation, Post, FacebookFactory}
+import facebook4j.{GeoLocation, Post}
 import scala.collection.JavaConversions._
 import scala.reflect.io.File
 
-object FBSearchCU extends App with Logging {
-  val facebook = new FacebookFactory().getInstance
+object FBSearchCU extends App with FacebookAPI with Logging {
   val ChampaignCounty = new GeoLocation(40.140300, -88.196100)
   val MAX_RETRIES = 5
 
@@ -26,8 +25,8 @@ object FBSearchCU extends App with Logging {
             feed = Some(facebook.getFeed(id).filter(_.getMessage != null))
           } catch {
             case e: Exception =>
-              Thread.sleep(500*attempt)
               logger.error(s"Attempt $attempt: ${e.getMessage}")
+              Thread.sleep(500*attempt)
           }
         } while (feed.isEmpty && attempt < MAX_RETRIES)
         place -> feed

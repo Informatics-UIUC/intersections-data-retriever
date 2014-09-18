@@ -1,16 +1,15 @@
 package edu.illinois.i3.apps.branthouston.twitterclient
 
 import com.typesafe.scalalogging.slf4j.Logging
-import facebook4j.{Post, Place, GeoLocation, FacebookFactory}
+import facebook4j.{Place, GeoLocation}
 import scala.collection.JavaConversions._
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 import scala.io.Source
 import scala.reflect.io.File
 
-object FBSearchPlaces extends App with Logging {
+object FBSearchPlaces extends App with FacebookAPI with Logging {
 
-  val facebook = new FacebookFactory().getInstance
   val ChampaignCounty = new GeoLocation(40.140300, -88.196100)
 
   var allPlaces = Set.empty[Place]

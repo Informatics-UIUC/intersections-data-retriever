@@ -1,18 +1,17 @@
 package edu.illinois.i3.apps.branthouston.twitterclient
 
 import com.typesafe.scalalogging.slf4j.Logging
-import twitter4j.{User, TwitterFactory}
+import twitter4j.User
 import scala.collection.JavaConversions._
 
 import scala.reflect.io.File
 
-object TWSearch extends App with Logging {
+object TWSearchUsers extends App with TwitterAPI with Logging {
 
-  val twitter = TwitterFactory.getSingleton
   val MAX_RETRIES = 5
 
-  def searchTwitter(keyword: String) = {
-    logger.info(s"Running query: $keyword")
+  def searchUsers(query: String) = {
+    logger.info(s"Running query: $query")
     val users = (1 to 50).flatMap {
       case page =>
         var result = Seq.empty[User]
@@ -20,7 +19,7 @@ object TWSearch extends App with Logging {
         do {
           try {
             attempt += 1
-            result = twitter.searchUsers(keyword, page)
+            result = twitter.searchUsers(query, page)
           } catch {
             case e: Exception =>
               Thread.sleep(500)
@@ -33,9 +32,9 @@ object TWSearch extends App with Logging {
     users
   }
 
-  val champaignUsers = searchTwitter("champaign")
-  val urbanaUsers = searchTwitter("urbana")
-  val chambanaUsers = searchTwitter("chambana")
+  val champaignUsers = searchUsers("champaign")
+  val urbanaUsers = searchUsers("urbana")
+  val chambanaUsers = searchUsers("chambana")
   val uniqueUsers = Set(champaignUsers ++ urbanaUsers ++ chambanaUsers: _*)
 
   logger.info(s"${uniqueUsers.size} unique users found")

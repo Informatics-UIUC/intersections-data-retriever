@@ -2,15 +2,14 @@ package edu.illinois.i3.apps.branthouston.twitterclient
 
 import com.typesafe.scalalogging.slf4j.Logging
 import scala.collection.JavaConversions._
-import facebook4j.{FacebookFactory, Post}
+import facebook4j.Post
 import net.liftweb.json._
 
 import scala.io.Source
 import scala.reflect.io.File
 
-object FBGetFeeds extends App with Logging {
+object FBGetFeeds extends App with FacebookAPI with Logging {
 
-  val facebook = new FacebookFactory().getInstance
   val MAX_RETRIES = 5
 
   def getFeedForId(id: String) = {
