@@ -13,12 +13,11 @@ object TWSearchKeyword extends App with TwitterAPI with Logging {
   def searchKeyword(keyword: String) = {
     print("+")
     var query = new Query(keyword)
-    var tweets = List.empty[Status]
+    var tweets = Seq.empty[Status]
     val MAX_RETRIES = 5
 
     do {
       var attempt = 0
-      var lastError: Throwable = null
       var result: QueryResult = null
       while (result == null && attempt < MAX_RETRIES) {
         try {
@@ -26,16 +25,12 @@ object TWSearchKeyword extends App with TwitterAPI with Logging {
           result = twitter.search(query)
           print(".")
         } catch {
-          case e @ (_: TwitterException | _: IOException) =>
+          case e @ (_: TwitterException | _: IOException) if attempt < MAX_RETRIES =>
             print("E")
-            lastError = e
             logger.error(s"Attempt $attempt: ${e.getMessage}")
             Thread.sleep(500 * attempt)
         }
       }
-
-      if (attempt == MAX_RETRIES)
-        throw lastError
 
       tweets ++= result.getTweets
       query = result.nextQuery()
@@ -44,7 +39,9 @@ object TWSearchKeyword extends App with TwitterAPI with Logging {
         val sleepFor = result.getRateLimitStatus.getSecondsUntilReset
         logger.warn("Rate limit reached - sleeping for {} sec", sleepFor.toString)
         print("S")
-        Thread.sleep((sleepFor + 30) * 1000)
+        //Thread.sleep((sleepFor + 30) * 1000)
+        Thread.sleep(TWITTER_RATE_LIMIT_WINDOW_SEC * 1000)
+
         logger.info("Resuming...")
       }
     } while (query != null)
@@ -62,7 +59,12 @@ object TWSearchKeyword extends App with TwitterAPI with Logging {
   print(s"Searching feeds of ${users.size} users...")
 
   import TWGetUserTimeline.getUserTimeline
-  tweets ++= users.flatMap(getUserTimeline).filter(_.getText.toLowerCase.contains(keyword.toLowerCase))
+  for (user <- users) {
+    val userTweetsByKeyword = getUserTimeline(user).filter(_.getText.toLowerCase.contains(keyword.toLowerCase))
+    logger.info("Found {} extra tweets from user {}", userTweetsByKeyword.size.toString, user)
+    tweets ++= userTweetsByKeyword
+  }
+  // tweets ++= users.flatMap(getUserTimeline).filter(_.getText.toLowerCase.contains(keyword.toLowerCase))
 
   val numTweetsDiff = tweets.size - numTweets
   println(s"$numTweetsDiff more tweets found")

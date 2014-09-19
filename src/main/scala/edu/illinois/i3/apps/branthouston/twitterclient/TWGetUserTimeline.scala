@@ -29,12 +29,12 @@ object TWGetUserTimeline extends App with TwitterAPI with Logging {
         val sleepFor = timeline.getRateLimitStatus.getSecondsUntilReset
         logger.warn("Rate limit reached - sleeping for {} sec", sleepFor.toString)
         print("S")
-        Thread.sleep((sleepFor + 30) * 1000)
+        //Thread.sleep((sleepFor + 30) * 1000)
+        Thread.sleep(TWITTER_RATE_LIMIT_WINDOW_SEC * 1000)
         logger.info("Resuming...")
       }
 
       var attempt = 0
-      var lastError: Throwable = null
       timeline = null
       while (timeline == null && attempt < MAX_RETRIES) {
         try {
@@ -42,16 +42,12 @@ object TWGetUserTimeline extends App with TwitterAPI with Logging {
           timeline = twitter.getUserTimeline(screenName, new Paging(pageId, 200, 1, maxId - 1))
           print(".")
         } catch {
-          case e @ (_: TwitterException | _: IOException) =>
+          case e @ (_: TwitterException | _: IOException) if attempt < MAX_RETRIES =>
             print("E")
-            lastError = e
             logger.error(s"Attempt $attempt: ${e.getMessage}")
             Thread.sleep(500 * attempt)
         }
       }
-
-      if (attempt == MAX_RETRIES)
-        throw lastError
     }
 
     userTimeline
