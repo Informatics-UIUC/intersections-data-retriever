@@ -1,4 +1,4 @@
-package edu.illinois.i3.apps.branthouston.twitterclient
+package edu.illinois.i3.apps.branthouston.twitter
 
 import com.typesafe.scalalogging.slf4j.Logging
 

@@ -1,4 +1,4 @@
-package edu.illinois.i3.apps.branthouston.twitterclient
+package edu.illinois.i3.apps.branthouston.twitter
 
 import twitter4j.{TwitterResponse, TwitterFactory}
 

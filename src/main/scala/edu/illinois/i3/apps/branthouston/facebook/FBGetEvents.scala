@@ -1,10 +1,11 @@
-package edu.illinois.i3.apps.branthouston.twitterclient
+package edu.illinois.i3.apps.branthouston.facebook
 
 import com.typesafe.scalalogging.slf4j.Logging
 import facebook4j.Event
-import scala.collection.JavaConversions._
 import net.liftweb.json._
+import org.rogach.scallop.ScallopConf
 
+import scala.collection.JavaConversions._
 import scala.io.Source
 import scala.reflect.io.File
 

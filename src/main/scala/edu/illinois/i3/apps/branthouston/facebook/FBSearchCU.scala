@@ -1,7 +1,8 @@
-package edu.illinois.i3.apps.branthouston.twitterclient
+package edu.illinois.i3.apps.branthouston.facebook
 
 import com.typesafe.scalalogging.slf4j.Logging
 import facebook4j.{GeoLocation, Post}
+
 import scala.collection.JavaConversions._
 import scala.reflect.io.File
 

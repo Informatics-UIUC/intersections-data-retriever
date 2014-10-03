@@ -1,11 +1,12 @@
-package edu.illinois.i3.apps.branthouston.twitterclient
+package edu.illinois.i3.apps.branthouston.facebook
 
 import com.typesafe.scalalogging.slf4j.Logging
-import scala.collection.JavaConversions._
-import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
-import scala.reflect.io.File
+import net.liftweb.json._
+
+import scala.collection.JavaConversions._
 import scala.language.reflectiveCalls
+import scala.reflect.io.File
 
 object FBSearchPage extends App with FacebookAPI with Logging {
   val keyword = readLine("Search pages for: ")
