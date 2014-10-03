@@ -1,0 +1,6 @@
+debug = false
+oauth.consumerKey = CONSUMER_KEY
+oauth.consumerSecret = CONSUMER_SECRET
+oauth.accessToken = ACCESS_TOKEN
+oauth.accessTokenSecret = ACCESS_TOKEN_SECRET
+jsonStoreEnabled = true

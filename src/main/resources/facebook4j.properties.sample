@@ -1,0 +1,6 @@
+debug = false
+oauth.appId = APP_ID
+oauth.appSecret = APP_SECRET
+oauth.accessToken = ACCESS_TOKEN
+oauth.permissions = read_stream
+jsonStoreEnabled = true
