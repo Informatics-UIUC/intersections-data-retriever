@@ -45,7 +45,7 @@ object FBSearchCU extends App with FacebookAPI with Logging {
 
   val allFeeds = champaignFeeds ++ urbanaFeeds ++ chambanaFeeds
 
-  val sbFB = new StringBuffer()
+  val sbFB = new StringBuilder()
   for {
     (place, posts) <- allFeeds
     post <- posts
@@ -54,5 +54,6 @@ object FBSearchCU extends App with FacebookAPI with Logging {
     sbFB.append(post.getId).append("\t").append(place.getId).append("\t").append(msg).append("\n")
   }
 
-  File("fb_CU_pages.txt").writeAll(sbFB.toString)
+  val saveAs = readLine("Save as: ")
+  File(saveAs).writeAll(sbFB.toString())
 }

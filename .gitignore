@@ -1,5 +1,6 @@
-.idea/
+/.idea/
 target/
 *.iml
-src/main/resources/facebook4j.properties
-src/main/resources/twitter4j.properties
+/src/main/resources/facebook4j.properties
+/src/main/resources/twitter4j.properties
+/data/

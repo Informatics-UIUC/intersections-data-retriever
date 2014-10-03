@@ -47,5 +47,6 @@ object TWSearchUsers extends App with TwitterAPI with Logging {
     sb.append(s"${u.getScreenName}\t${u.getFollowersCount}\t${u.getFriendsCount}\t${u.getStatusesCount}\t${u.getLocation}\t${u.getTimeZone}\t${u.getUtcOffset}\t${u.getCreatedAt.toString}\t${u.isGeoEnabled}\n")
   }
 
-  File("tw_users.tsv").writeAll(sb.toString())
+  val saveAs = readLine("Save as: ")
+  File(saveAs).writeAll(sb.toString())
 }

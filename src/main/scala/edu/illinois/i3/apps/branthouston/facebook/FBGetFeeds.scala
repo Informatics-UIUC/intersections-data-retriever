@@ -32,7 +32,7 @@ object FBGetFeeds extends App with FacebookAPI with Logging {
   val input = readLine("Load: ")
   val pagesJson = parse(Source.fromFile(input).getLines().mkString)
 
-  val sbPosts = new StringBuffer()
+  val sbPosts = new StringBuilder()
   sbPosts.append("msg_id\tpage_id\tmessage\n")
 
   for {
@@ -64,5 +64,5 @@ object FBGetFeeds extends App with FacebookAPI with Logging {
   }
 
   val saveAs = readLine("Save as: ")
-  File(saveAs).writeAll(sbPosts.toString)
+  File(saveAs).writeAll(sbPosts.toString())
 }

@@ -3,7 +3,6 @@ package edu.illinois.i3.apps.branthouston.facebook
 import com.typesafe.scalalogging.slf4j.Logging
 import facebook4j.Event
 import net.liftweb.json._
-import org.rogach.scallop.ScallopConf
 
 import scala.collection.JavaConversions._
 import scala.io.Source
@@ -30,7 +29,8 @@ object FBGetEvents extends App with FacebookAPI with Logging {
     events
   }
 
-  val placesJson = parse(Source.fromFile("fb_places.json").getLines().mkString)
+  val input = readLine("Load JSON places from: ")
+  val placesJson = parse(Source.fromFile(input).getLines().mkString)
 
   val sbEvents = new StringBuilder()
   sbEvents.append("id\tstart\tend\tdescription\tname\tlocation\n")
@@ -61,5 +61,6 @@ object FBGetEvents extends App with FacebookAPI with Logging {
       println("error!")
   }
 
-  File("fb_events.txt").writeAll(sbEvents.toString)
+  val saveAs = readLine("Save as: ")
+  File(saveAs).writeAll(sbEvents.toString())
 }

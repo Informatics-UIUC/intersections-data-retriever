@@ -14,7 +14,10 @@ object FBSearchPlaces extends App with FacebookAPI with Logging {
   val ChampaignCounty = new GeoLocation(40.140300, -88.196100)
 
   var allPlaces = Set.empty[Place]
-  for (placeKw <- Source.fromFile("places.txt").getLines()) {
+
+  val input = readLine("Load places: ")
+
+  for (placeKw <- Source.fromFile(input).getLines()) {
     print(s"Searching for '$placeKw'...")
     val places = facebook.searchPlaces(placeKw, ChampaignCounty, 32000)
     println(s"${places.size()} found")
@@ -38,5 +41,6 @@ object FBSearchPlaces extends App with FacebookAPI with Logging {
     )
   )))
 
-  File("fb_places.json").writeAll(placesJson)
+  val saveAs = readLine("Save as: ")
+  File(saveAs).writeAll(placesJson)
 }
