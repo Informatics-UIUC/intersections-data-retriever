@@ -37,12 +37,18 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
       descr = "Output file",
       required = true
     )
+
+    val retryCount = opt[Int]("retry",
+      descr = "Number of times to retry when calling the Facebook API in case of error",
+      default = Some(3)
+    )
   }
 
   // Parse the command line args and extract values
   val conf = new Conf(args)
   val placesFile = conf.placesFile()
   val outputFile = conf.outputFile()
+  val retryCount = conf.retryCount()
 
   val placesJson = parse(Source.fromFile(placesFile).getLines().mkString)
   var allEventsJson = List.empty[String]
@@ -67,10 +73,10 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
     JField("name", JString(name)) <- placeJson
   } {
     var eventCount = 0
-    var events = facebook.getEvents(id)
-    while (events != null && events.nonEmpty) {
-      eventCount += events.size
-      allEventsJson ++= events
+    var events = retry(retryCount) { facebook.getEvents(id) }
+    while (events.isSuccess && events.get != null && events.get.nonEmpty) {
+      eventCount += events.get.size
+      allEventsJson ++= events.get
         .map(e => parse(DataObjectFactory.getRawJSON(facebook.getEvent(e.getId))))
         .map(json => json transform {
           case JField("id", sid) => JField("_id", "$numberLong" -> sid)
@@ -80,8 +86,8 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
           case JField("timezone", _) => JNothing
         })
         .map(compactRender(_) + "\n")
-      val paging = events.getPaging
-      events = facebook.fetchNext(paging)
+      val paging = events.get.getPaging
+      events = retry(retryCount) { facebook.fetchNext(paging) }
     }
 
     logger.debug("Found {} events for {}", eventCount.toString, name)

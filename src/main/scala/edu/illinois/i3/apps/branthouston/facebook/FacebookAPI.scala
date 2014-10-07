@@ -1,16 +1,19 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import facebook4j.{FacebookResponse, FacebookFactory}
-import scala.util.{Success, Try}
+import com.typesafe.scalalogging.slf4j.Logging
+import facebook4j.FacebookFactory
+import scala.util.{Failure, Success, Try}
 
-trait FacebookAPI {
+trait FacebookAPI extends Logging {
   val facebook = new FacebookFactory().getInstance
 
   @annotation.tailrec
-  final def retry[T <: FacebookResponse](n: Int)(fn: => T): Try[T] = {
+  final def retry[T](n: Int)(fn: => T): Try[T] = {
     Try { fn } match {
       case x: Success[T] => x
-      case _ if n > 1 => retry(n - 1)(fn)
+      case Failure(e) if n > 1 =>
+        logger.warn("Error invoking the Facebook API", e)
+        retry(n - 1)(fn)
       case f => f
     }
   }
