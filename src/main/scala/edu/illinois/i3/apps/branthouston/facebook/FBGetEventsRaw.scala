@@ -64,7 +64,7 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
       case _ => None
     }
     val date = parseDateTime(dateTimeStr, tz)
-    JField("$date", "$numberLong" -> date.getMillis)
+    "$date" -> date.toDateTime(DateTimeZone.UTC).toString
   }
 
   for {
