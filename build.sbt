@@ -1,6 +1,6 @@
 name := "intersections"
 
-version := "0.3-SNAPSHOT"
+version := "0.4-SNAPSHOT"
 
 organization := "edu.illinois.i3.projects.branthouston"
 

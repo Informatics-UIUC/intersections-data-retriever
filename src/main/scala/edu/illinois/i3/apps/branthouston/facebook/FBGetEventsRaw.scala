@@ -11,6 +11,7 @@ import scala.collection.JavaConversions._
 import scala.io.Source
 import com.github.nscala_time.time.Imports._
 
+
 object FBGetEventsRaw extends App with FacebookAPI with Logging {
 
   class Conf(arguments: Seq[String]) extends ScallopConf(arguments) {
@@ -57,7 +58,7 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
       case _ => None
     }
     val date = parseDateTime(dateTimeStr, tz)
-    "$date" -> date.toDateTime(DateTimeZone.UTC).toString
+    JField("$date", "$numberLong" -> date.getMillis)
   }
 
   for {
@@ -83,7 +84,7 @@ object FBGetEventsRaw extends App with FacebookAPI with Logging {
       events = facebook.fetchNext(paging)
     }
 
-    logger.info("Found {} events for {}", eventCount.toString, name)
+    logger.debug("Found {} events for {}", eventCount.toString, name)
   }
 
   logger.info("Found {} total events", allEventsJson.size.toString)
