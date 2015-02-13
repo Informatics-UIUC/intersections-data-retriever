@@ -1,6 +1,6 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.Event
 import net.liftweb.json._
 
@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 import scala.io.Source
 import scala.reflect.io.File
 
-object FBGetEvents extends App with FacebookAPI with Logging {
+object FBGetEvents extends App with FacebookAPI with LazyLogging {
 
   val MAX_RETRIES = 5
 
@@ -29,7 +29,7 @@ object FBGetEvents extends App with FacebookAPI with Logging {
     events
   }
 
-  val input = readLine("Load JSON places from: ")
+  val input = io.StdIn.readLine("Load JSON places from: ")
   val placesJson = parse(Source.fromFile(input).getLines().mkString)
 
   val sbEvents = new StringBuilder()
@@ -61,6 +61,6 @@ object FBGetEvents extends App with FacebookAPI with Logging {
       println("error!")
   }
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(sbEvents.toString())
 }

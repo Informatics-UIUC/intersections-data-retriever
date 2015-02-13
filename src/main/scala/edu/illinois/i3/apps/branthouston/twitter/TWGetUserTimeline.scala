@@ -2,7 +2,7 @@ package edu.illinois.i3.apps.branthouston.twitter
 
 import java.io.IOException
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import twitter4j.{TwitterException, Paging, Status}
 import scala.collection.JavaConversions._
 import net.liftweb.json._
@@ -10,7 +10,7 @@ import net.liftweb.json.JsonDSL._
 
 import scala.reflect.io.File
 
-object TWGetUserTimeline extends App with TwitterAPI with Logging {
+object TWGetUserTimeline extends App with TwitterAPI with LazyLogging {
 
   def getUserTimeline(screenName: String) = {
     print("+")
@@ -53,7 +53,7 @@ object TWGetUserTimeline extends App with TwitterAPI with Logging {
     userTimeline
   }
 
-  val user = readLine("Twitter handle: ")
+  val user = io.StdIn.readLine("Twitter handle: ")
   val tweets = getUserTimeline(user)
 
   val json = pretty(render(tweets.map(t =>
@@ -67,6 +67,6 @@ object TWGetUserTimeline extends App with TwitterAPI with Logging {
       ("screenName" -> t.getUser.getScreenName)
   )))
 
-  val saveAs = readLine("Save JSON results as: ")
+  val saveAs = io.StdIn.readLine("Save JSON results as: ")
   File(saveAs).writeAll(json)
 }

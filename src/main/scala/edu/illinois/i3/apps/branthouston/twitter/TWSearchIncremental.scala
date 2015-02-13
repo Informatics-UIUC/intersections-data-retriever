@@ -2,13 +2,13 @@ package edu.illinois.i3.apps.branthouston.twitter
 
 import java.io.IOException
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import twitter4j._
 import scala.collection.JavaConversions._
 
 import scala.reflect.io.File
 
-object TWSearchIncremental extends App with TwitterAPI with Logging {
+object TWSearchIncremental extends App with TwitterAPI with LazyLogging {
 
   def searchKeyword(keyword: String) = {
     print("+")
@@ -49,7 +49,7 @@ object TWSearchIncremental extends App with TwitterAPI with Logging {
     tweets
   }
 
-  val keyword = readLine("Keyword: ")
+  val keyword = io.StdIn.readLine("Keyword: ")
   print("Searching Twitter...")
   var tweets = searchKeyword(keyword).toSet
   val numTweets = tweets.size
@@ -66,6 +66,6 @@ object TWSearchIncremental extends App with TwitterAPI with Logging {
       .append(msg).append("\n")
   }
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(sbTweets.toString)
 }

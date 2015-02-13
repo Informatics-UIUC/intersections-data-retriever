@@ -1,6 +1,6 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.{GeoLocation, Place}
 import net.liftweb.json.JsonDSL._
 import net.liftweb.json._
@@ -9,13 +9,13 @@ import scala.collection.JavaConversions._
 import scala.io.Source
 import scala.reflect.io.File
 
-object FBSearchPlaces extends App with FacebookAPI with Logging {
+object FBSearchPlaces extends App with FacebookAPI with LazyLogging {
 
   val ChampaignCounty = new GeoLocation(40.140300, -88.196100)
 
   var allPlaces = Set.empty[Place]
 
-  val input = readLine("Load places: ")
+  val input = io.StdIn.readLine("Load places: ")
 
   for (placeKw <- Source.fromFile(input).getLines()) {
     print(s"Searching for '$placeKw'...")
@@ -41,6 +41,6 @@ object FBSearchPlaces extends App with FacebookAPI with Logging {
     )
   )))
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(placesJson)
 }

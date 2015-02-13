@@ -1,12 +1,12 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.{GeoLocation, Post}
 
 import scala.collection.JavaConversions._
 import scala.reflect.io.File
 
-object FBSearchCU extends App with FacebookAPI with Logging {
+object FBSearchCU extends App with FacebookAPI with LazyLogging {
   val ChampaignCounty = new GeoLocation(40.140300, -88.196100)
   val MAX_RETRIES = 5
 
@@ -54,6 +54,6 @@ object FBSearchCU extends App with FacebookAPI with Logging {
     sbFB.append(post.getId).append("\t").append(place.getId).append("\t").append(msg).append("\n")
   }
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(sbFB.toString())
 }

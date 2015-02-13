@@ -1,6 +1,6 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.Post
 import net.liftweb.json._
 
@@ -8,7 +8,7 @@ import scala.collection.JavaConversions._
 import scala.io.Source
 import scala.reflect.io.File
 
-object FBGetFeeds extends App with FacebookAPI with Logging {
+object FBGetFeeds extends App with FacebookAPI with LazyLogging {
 
   val MAX_RETRIES = 5
 
@@ -29,7 +29,7 @@ object FBGetFeeds extends App with FacebookAPI with Logging {
     feed
   }
 
-  val input = readLine("Load: ")
+  val input = io.StdIn.readLine("Load: ")
   val pagesJson = parse(Source.fromFile(input).getLines().mkString)
 
   val sbPosts = new StringBuilder()
@@ -63,6 +63,6 @@ object FBGetFeeds extends App with FacebookAPI with Logging {
     }
   }
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(sbPosts.toString())
 }

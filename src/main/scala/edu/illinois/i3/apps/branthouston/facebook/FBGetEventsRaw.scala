@@ -1,7 +1,7 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
 import java.io.File
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.json.DataObjectFactory
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
@@ -12,7 +12,7 @@ import scala.io.Source
 import com.github.nscala_time.time.Imports._
 
 
-object FBGetEventsRaw extends App with FacebookAPI with Logging {
+object FBGetEventsRaw extends App with FacebookAPI with LazyLogging {
 
   class Conf(arguments: Seq[String]) extends ScallopConf(arguments) {
     val (appTitle, appVersion, appVendor) = {

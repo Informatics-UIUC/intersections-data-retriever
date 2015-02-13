@@ -1,6 +1,6 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import net.liftweb.json.JsonDSL._
 import net.liftweb.json._
 
@@ -8,8 +8,8 @@ import scala.collection.JavaConversions._
 import scala.language.reflectiveCalls
 import scala.reflect.io.File
 
-object FBSearchPage extends App with FacebookAPI with Logging {
-  val keyword = readLine("Search pages for: ")
+object FBSearchPage extends App with FacebookAPI with LazyLogging {
+  val keyword = io.StdIn.readLine("Search pages for: ")
 
   print("Searching pages...")
   val pages = facebook.searchPages(keyword)
@@ -22,6 +22,6 @@ object FBSearchPage extends App with FacebookAPI with Logging {
     ("name" -> d.name)
   )))
 
-  val saveAs = readLine("Save JSON results as: ")
+  val saveAs = io.StdIn.readLine("Save JSON results as: ")
   File(saveAs).writeAll(dataJson)
 }

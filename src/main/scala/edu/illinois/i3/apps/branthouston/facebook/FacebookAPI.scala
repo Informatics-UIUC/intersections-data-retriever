@@ -1,10 +1,10 @@
 package edu.illinois.i3.apps.branthouston.facebook
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import facebook4j.FacebookFactory
 import scala.util.{Failure, Success, Try}
 
-trait FacebookAPI extends Logging {
+trait FacebookAPI extends LazyLogging {
   val facebook = new FacebookFactory().getInstance
 
   @annotation.tailrec

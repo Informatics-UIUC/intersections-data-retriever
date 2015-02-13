@@ -1,12 +1,12 @@
 package edu.illinois.i3.apps.branthouston.twitter
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 import twitter4j.User
 import scala.collection.JavaConversions._
 
 import scala.reflect.io.File
 
-object TWSearchUsers extends App with TwitterAPI with Logging {
+object TWSearchUsers extends App with TwitterAPI with LazyLogging {
 
   val MAX_RETRIES = 5
 
@@ -47,6 +47,6 @@ object TWSearchUsers extends App with TwitterAPI with Logging {
     sb.append(s"${u.getScreenName}\t${u.getFollowersCount}\t${u.getFriendsCount}\t${u.getStatusesCount}\t${u.getLocation}\t${u.getTimeZone}\t${u.getUtcOffset}\t${u.getCreatedAt.toString}\t${u.isGeoEnabled}\n")
   }
 
-  val saveAs = readLine("Save as: ")
+  val saveAs = io.StdIn.readLine("Save as: ")
   File(saveAs).writeAll(sb.toString())
 }

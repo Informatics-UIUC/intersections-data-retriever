@@ -1,8 +1,8 @@
 package edu.illinois.i3.apps.branthouston.twitter
 
-import com.typesafe.scalalogging.slf4j.Logging
+import com.typesafe.scalalogging.LazyLogging
 
-object TWRateLimitInfo extends App with TwitterAPI with Logging {
+object TWRateLimitInfo extends App with TwitterAPI with LazyLogging {
 
   val rateLimitStatus = twitter.getAPIConfiguration.getRateLimitStatus
 
